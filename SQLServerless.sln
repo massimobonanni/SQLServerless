@@ -3,9 +3,38 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.SQLCore", "SQLServerless.SQLCore\SQLServerless.SQLCore.csproj", "{26DA0B20-4CC0-4C13-B1EE-473B9B485110}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.Core", "SQLServerless.Core\SQLServerless.Core.csproj", "{C6149723-915A-4A79-B7E0-EDEEE2C8FC19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{00685B5C-02D1-4F4E-92D0-BADD394F1ECA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.SQLCore.Console", "Test\SQLServerless.SQLCore.Console\SQLServerless.SQLCore.Console.csproj", "{60BFFACD-6ECE-42E0-95FF-1177AC8D1420}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26DA0B20-4CC0-4C13-B1EE-473B9B485110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26DA0B20-4CC0-4C13-B1EE-473B9B485110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26DA0B20-4CC0-4C13-B1EE-473B9B485110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26DA0B20-4CC0-4C13-B1EE-473B9B485110}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6149723-915A-4A79-B7E0-EDEEE2C8FC19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6149723-915A-4A79-B7E0-EDEEE2C8FC19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6149723-915A-4A79-B7E0-EDEEE2C8FC19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6149723-915A-4A79-B7E0-EDEEE2C8FC19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60BFFACD-6ECE-42E0-95FF-1177AC8D1420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60BFFACD-6ECE-42E0-95FF-1177AC8D1420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60BFFACD-6ECE-42E0-95FF-1177AC8D1420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60BFFACD-6ECE-42E0-95FF-1177AC8D1420}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{60BFFACD-6ECE-42E0-95FF-1177AC8D1420} = {00685B5C-02D1-4F4E-92D0-BADD394F1ECA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5E278B8-7CDB-4FA1-83D2-BAEEF5979CD9}
