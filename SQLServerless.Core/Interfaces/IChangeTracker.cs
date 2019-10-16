@@ -8,6 +8,8 @@ namespace SQLServerless.Core.Interfaces
 {
     public interface IChangeTracker
     {
+        void SetConfiguration(ChangeTrackerConfiguration config);
+
         Task<TableData> GetChangesAsync(string tableName, string keyName);
     }
 }

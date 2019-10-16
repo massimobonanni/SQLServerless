@@ -60,6 +60,11 @@ namespace SQLServerless.Extensions.Triggers
 
         private async Task ListenerAction(CancellationToken token)
         {
+            this._changeTracker.SetConfiguration(new ChangeTrackerConfiguration()
+            {
+                ConnectionString = this._attribute.ConnectionString
+            });
+
             TableData tableChanges = null;
 
             while (!token.IsCancellationRequested)
@@ -68,7 +73,7 @@ namespace SQLServerless.Extensions.Triggers
                 {
                     tableChanges = await this._changeTracker.GetChangesAsync(this._attribute.TableName, this._attribute.KeyName);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     tableChanges = null;
                 }

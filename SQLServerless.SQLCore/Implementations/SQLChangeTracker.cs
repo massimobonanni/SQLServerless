@@ -13,19 +13,10 @@ namespace SQLServerless.SQLCore.Implementations
 {
     public class SQLChangeTracker : IChangeTracker
     {
-        private readonly string connectionString;
+        private string connectionString;
         private long lastTrackingVersion = 0;
         private string tableName;
         private string keyName;
-
-        public SQLChangeTracker(string connectionString)
-        {
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new ArgumentException(nameof(connectionString));
-
-            this.connectionString = connectionString;
-        }
-
 
         #region [ Private Methods ]
 
@@ -105,10 +96,26 @@ namespace SQLServerless.SQLCore.Implementations
             if (currentTrackingVersion != lastTrackingVersion)
             {
                 changes = await this.GetChangesAsync(this.tableName, this.keyName, this.lastTrackingVersion);
+                changes.TableName = this.tableName;
                 this.lastTrackingVersion = currentTrackingVersion;
             }
 
             return changes;
+        }
+
+        public void SetConfiguration(ChangeTrackerConfiguration config)
+        {
+            if (config == null)
+                throw new ArgumentNullException(nameof(config));
+
+            if (string.IsNullOrWhiteSpace(config.ConnectionString))
+                throw new ArgumentException(nameof(config.ConnectionString));
+
+            if (config.ConnectionString != this.connectionString)
+            {
+                this.connectionString = config.ConnectionString;
+                this.lastTrackingVersion = 0;
+            }
         }
 
         #endregion [ Interface IChangeTracker ]

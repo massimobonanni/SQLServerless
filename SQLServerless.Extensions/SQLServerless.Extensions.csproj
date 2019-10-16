@@ -12,4 +12,8 @@
     <ProjectReference Include="..\SQLServerless.Core\SQLServerless.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DependencyInjection\" />
+  </ItemGroup>
+
 </Project>

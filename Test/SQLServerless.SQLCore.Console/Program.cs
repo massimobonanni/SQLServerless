@@ -25,7 +25,8 @@ namespace SQLServerless.SQLCore.Console
 
             var connectionString = config.GetConnectionString("DefaultConnection");
 
-            var changeTracker = new SQLChangeTracker(connectionString);
+            var changeTracker = new SQLChangeTracker();
+            changeTracker.SetConfiguration(new Core.Entities.ChangeTrackerConfiguration() { ConnectionString = connectionString });
 
             do
             {

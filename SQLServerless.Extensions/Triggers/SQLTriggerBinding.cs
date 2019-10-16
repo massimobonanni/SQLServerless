@@ -35,6 +35,7 @@ namespace SQLServerless.Extensions.Triggers
             this._attribute = attribute;
             this._changeTracker = changeTracker;
         }
+
         public Task<ITriggerData> BindAsync(object value, ValueBindingContext context)
         {
             return _emptyBindingDataTask;
