@@ -22,5 +22,9 @@ namespace SQLServerless.Extensions.Triggers
         public string TableName { get; internal set; }
 
         public string KeyName { get; internal set; }
+
+        [AppSetting(Default = "PollingInSecs")]
+        [AutoResolve]
+        public int PollingInSeconds { get; set; } = 10;
     }
 }

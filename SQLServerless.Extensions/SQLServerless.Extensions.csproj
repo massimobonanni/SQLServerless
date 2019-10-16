@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SQLServerless.Core\SQLServerless.Core.csproj" />
+  </ItemGroup>
+
 </Project>
