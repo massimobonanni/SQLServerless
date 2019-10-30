@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SQLServerless.SQLCore.Implementations
@@ -20,7 +21,7 @@ namespace SQLServerless.SQLCore.Implementations
 
         #region [ Private Methods ]
 
-        private async Task<long> GetCurrentTrackingVersionAsync()
+        private async Task<long> GetCurrentTrackingVersionAsync( CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(connectionString))
             using (var command = connection.CreateCommand())
@@ -29,7 +30,7 @@ namespace SQLServerless.SQLCore.Implementations
                 command.CommandText = QueryFactory.GetChangeTrackingCurrentVersionQuery();
 
                 connection.Open();
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync(cancellationToken))
                 {
                     reader.Read();
                     var value = reader.GetInt64(0);
@@ -38,7 +39,7 @@ namespace SQLServerless.SQLCore.Implementations
             }
         }
 
-        private async Task<TableData> GetChangesAsync(string tableName, string keyName, long trackingVersion)
+        private async Task<TableData> GetChangesAsync(string tableName, string keyName, long trackingVersion, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(connectionString))
             using (var command = connection.CreateCommand())
@@ -47,10 +48,10 @@ namespace SQLServerless.SQLCore.Implementations
                 command.CommandText = QueryFactory.GetChangesQuery(tableName, keyName, trackingVersion);
 
                 connection.Open();
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = await command.ExecuteReaderAsync(cancellationToken))
                 {
                     var tableData = new TableData();
-                    while (await reader.ReadAsync())
+                    while (await reader.ReadAsync(cancellationToken))
                     {
                         var fieldCount = reader.FieldCount;
                         var row = new object[fieldCount];
@@ -69,7 +70,7 @@ namespace SQLServerless.SQLCore.Implementations
         #endregion [ Private Methods ]
 
         #region [ Interface IChangeTracker ]
-        public async Task<TableData> GetChangesAsync(string tableName, string keyName)
+        public async Task<TableData> GetChangesAsync(string tableName, string keyName, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(tableName))
                 throw new ArgumentException(nameof(tableName));
@@ -81,21 +82,21 @@ namespace SQLServerless.SQLCore.Implementations
 
             if (AreTableOrKeyChanged(tableName, keyName))
             {
-                this.lastTrackingVersion = await GetCurrentTrackingVersionAsync();
+                this.lastTrackingVersion = await GetCurrentTrackingVersionAsync(cancellationToken);
                 currentTrackingVersion = this.lastTrackingVersion;
                 this.tableName = tableName;
                 this.keyName = keyName;
             }
             else
             {
-                currentTrackingVersion = await GetCurrentTrackingVersionAsync();
+                currentTrackingVersion = await GetCurrentTrackingVersionAsync(cancellationToken);
             }
 
 
             TableData changes = null;
             if (currentTrackingVersion != lastTrackingVersion)
             {
-                changes = await this.GetChangesAsync(this.tableName, this.keyName, this.lastTrackingVersion);
+                changes = await this.GetChangesAsync(this.tableName, this.keyName, this.lastTrackingVersion, cancellationToken);
                 changes.TableName = this.tableName;
                 this.lastTrackingVersion = currentTrackingVersion;
             }

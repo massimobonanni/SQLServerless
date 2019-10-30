@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SQLServerless.Core.Interfaces
 {
-    public interface IChangeTracker
+    public interface IDBService
     {
-        void SetConfiguration(ChangeTrackerConfiguration config);
+        void SetConfiguration(DBConfiguration config);
 
-        Task<TableData> GetChangesAsync(string tableName, string keyName, CancellationToken cancellationToken);
+        Task<bool> ExecuteCommandAsync(Command command, CancellationToken cancellationToken);
     }
 }

@@ -5,6 +5,8 @@ using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.FileExtensions;
 using Microsoft.Extensions.Configuration.Json;
+using SQLServerless.Core.Entities;
+using SQLServerless.Core.Interfaces;
 using SQLServerless.SQLCore.Implementations;
 
 namespace SQLServerless.SQLCore.Console
@@ -22,8 +24,9 @@ namespace SQLServerless.SQLCore.Console
                 .AddJsonFile("appsettings.local.json", true, true)
                 .Build();
 
-
             var connectionString = config.GetConnectionString("DefaultConnection");
+
+            //AddContact(connectionString);
 
             var changeTracker = new SQLChangeTracker();
             changeTracker.SetConfiguration(new Core.Entities.ChangeTrackerConfiguration() { ConnectionString = connectionString });
@@ -32,7 +35,7 @@ namespace SQLServerless.SQLCore.Console
             {
                 while (!System.Console.KeyAvailable)
                 {
-                    var changes = changeTracker.GetChangesAsync("dbo.Contacts", "Id").GetAwaiter().GetResult();
+                    var changes = changeTracker.GetChangesAsync("dbo.Contacts", "Id", default(CancellationToken)).GetAwaiter().GetResult();
                     if (changes != null && changes.Rows.Any())
                     {
                         foreach (var item in changes.Rows)
@@ -48,6 +51,19 @@ namespace SQLServerless.SQLCore.Console
                 }
             } while (System.Console.ReadKey(true).Key != ConsoleKey.Escape);
 
+        }
+
+        private static void AddContact(string connectionString)
+        {
+            IDBService dbService = new SQLService();
+            dbService.SetConfiguration(new Core.Entities.DBConfiguration() { ConnectionString = connectionString });
+
+            var command = new Command("[dbo].[InsertContact]");
+            command.Parameters.Add("firstName", "Massimo");
+            command.Parameters.Add("lastName", "Bonanni");
+            command.Parameters.Add("email", "massimo.bonanni@microsoft.com");
+
+            dbService.ExecuteCommandAsync(command, default(CancellationToken)).GetAwaiter().GetResult();
         }
     }
 }

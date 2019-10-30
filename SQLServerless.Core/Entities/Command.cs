@@ -1,31 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SQLServerless.Core.Entities
 {
     public class Command
     {
-        public string CommandText { get; set; }
+        public string StoredName { get; set; }
 
         public Dictionary<string, object> Parameters { get; set; }
 
-        public bool IsCommandText { get; set; }
-
         #region Constructors
 
-        public Command()
+        private Command()
         {
             this.Parameters = new Dictionary<string, object>();
-            this.IsCommandText = false;
         }
 
-        public Command(string commandText) : this()
+        public Command(string storedName) : this()
         {
-            this.CommandText = commandText;
+            if (string.IsNullOrWhiteSpace(storedName))
+                throw new ArgumentNullException(nameof(storedName));
+
+            this.StoredName = storedName;
         }
 
-        public Command(string commandName, Dictionary<string, object> parameters) : this()
+        public Command(string storedName, Dictionary<string, object> parameters) : this()
         {
-            this.CommandText = commandName;
+            this.StoredName = storedName;
             if (parameters != null)
             {
                 this.Parameters = parameters;
@@ -33,6 +34,6 @@ namespace SQLServerless.Core.Entities
         }
 
         #endregion
-       
+
     }
 }

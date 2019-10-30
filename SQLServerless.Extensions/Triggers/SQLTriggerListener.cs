@@ -71,7 +71,7 @@ namespace SQLServerless.Extensions.Triggers
             {
                 try
                 {
-                    tableChanges = await this._changeTracker.GetChangesAsync(this._attribute.TableName, this._attribute.KeyName);
+                    tableChanges = await this._changeTracker.GetChangesAsync(this._attribute.TableName, this._attribute.KeyName,token);
                 }
                 catch (Exception ex)
                 {
