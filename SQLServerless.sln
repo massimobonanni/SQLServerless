@@ -7,13 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{00685B5C-0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLServerless.SQLCore.Console", "Test\SQLServerless.SQLCore.Console\SQLServerless.SQLCore.Console.csproj", "{60BFFACD-6ECE-42E0-95FF-1177AC8D1420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.Extensions", "SQLServerless.Extensions\SQLServerless.Extensions.csproj", "{B22B065C-D8C6-4C2B-99F8-4C8D874642E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLServerless.Extensions", "SQLServerless.Extensions\SQLServerless.Extensions.csproj", "{B22B065C-D8C6-4C2B-99F8-4C8D874642E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.Core", "SQLServerless.Core\SQLServerless.Core.csproj", "{4F95DB28-EDE4-4CD9-82E4-8DF9C18B8FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLServerless.Core", "SQLServerless.Core\SQLServerless.Core.csproj", "{4F95DB28-EDE4-4CD9-82E4-8DF9C18B8FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.SQLCore", "SQLServerless.SQLCore\SQLServerless.SQLCore.csproj", "{55D4269B-6988-49A3-AA4C-44D3D2C45786}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLServerless.SQLCore", "SQLServerless.SQLCore\SQLServerless.SQLCore.csproj", "{55D4269B-6988-49A3-AA4C-44D3D2C45786}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerless.Functions", "SQLServerless.Functions\SQLServerless.Functions.csproj", "{C01281A3-5FED-4C68-9469-A6D827CCA2AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLServerless.Functions", "SQLServerless.Functions\SQLServerless.Functions.csproj", "{C01281A3-5FED-4C68-9469-A6D827CCA2AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{A5AD0A05-EEDE-4C75-8B7D-3A5393D4F783}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SQLServerless.Demo.DB", "Demo\SQLServerless.Demo.DB\SQLServerless.Demo.DB.sqlproj", "{93861DAA-41BC-4B52-A1E6-B7306FF54A83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +45,19 @@ Global
 		{C01281A3-5FED-4C68-9469-A6D827CCA2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C01281A3-5FED-4C68-9469-A6D827CCA2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C01281A3-5FED-4C68-9469-A6D827CCA2AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{60BFFACD-6ECE-42E0-95FF-1177AC8D1420} = {00685B5C-02D1-4F4E-92D0-BADD394F1ECA}
+		{93861DAA-41BC-4B52-A1E6-B7306FF54A83} = {A5AD0A05-EEDE-4C75-8B7D-3A5393D4F783}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5E278B8-7CDB-4FA1-83D2-BAEEF5979CD9}
