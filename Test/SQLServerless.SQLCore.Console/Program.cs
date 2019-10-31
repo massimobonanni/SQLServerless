@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration.FileExtensions;
 using Microsoft.Extensions.Configuration.Json;
 using SQLServerless.Core.Entities;
 using SQLServerless.Core.Interfaces;
+using SQLServerless.SQLCore.Helpers;
 using SQLServerless.SQLCore.Implementations;
 
 namespace SQLServerless.SQLCore.Console
@@ -26,6 +27,7 @@ namespace SQLServerless.SQLCore.Console
 
             var connectionString = config.GetConnectionString("DefaultConnection");
 
+            TestGetInsertStatement();
             //AddContact(connectionString);
 
             var changeTracker = new SQLChangeTracker();
@@ -64,6 +66,19 @@ namespace SQLServerless.SQLCore.Console
             command.Parameters.Add("email", "massimo.bonanni@microsoft.com");
 
             dbService.ExecuteCommandAsync(command, default(CancellationToken)).GetAwaiter().GetResult();
+        }
+
+        private static void TestGetInsertStatement()
+        {
+            var tablerow = new TableRowData();
+            tablerow.Add("Id",1);
+            tablerow.Add("FirstName", "Massimo");
+            tablerow.Add("LastName", "Bonanni");
+            tablerow.Add("Age", 49);
+            tablerow.Add("BirthDate", new DateTime(1970,2,26));
+
+            var statement = QueryFactory.GetInsertStatement("dbo.Contacts", tablerow);
+
         }
     }
 }
