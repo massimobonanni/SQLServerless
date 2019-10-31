@@ -1,5 +1,6 @@
 ﻿using SQLServerless.Core.Entities;
 using SQLServerless.Core.Interfaces;
+using SQLServerless.SQLCore.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -43,6 +44,16 @@ namespace SQLServerless.SQLCore.Implementations
             }
             return sqlCommand;
         }
+
+        private SqlCommand CreateSqlCommand(SqlConnection connection, TableData table)
+        {
+            var sqlCommand = connection.CreateCommand();
+
+            sqlCommand.CommandText = QueryFactory.GetInsertStatement(table);
+            sqlCommand.CommandType = System.Data.CommandType.Text;
+
+            return sqlCommand;
+        }
         #endregion [ Private Methods ]
 
         #region [ Interface IDBService ]
@@ -71,6 +82,22 @@ namespace SQLServerless.SQLCore.Implementations
                 throw new ArgumentException(nameof(config.ConnectionString));
 
             this.connectionString = config.ConnectionString;
+        }
+
+        public async Task<bool> InsertTableDataAsync(TableData table, CancellationToken cancellationToken)
+        {
+            if (table == null)
+                throw new ArgumentNullException(nameof(table));
+
+            var result = false;
+            using (var sqlConnection = await OpenSqlConnectionAsync(cancellationToken))
+            using (var sqlCommand = CreateSqlCommand(sqlConnection, table))
+            {
+                await sqlCommand.ExecuteNonQueryAsync(cancellationToken);
+                result = true;
+            }
+
+            return result;
         }
         #endregion [ Interface IDBService ]
     }

@@ -12,5 +12,7 @@ namespace SQLServerless.Core.Interfaces
         void SetConfiguration(DBConfiguration config);
 
         Task<bool> ExecuteCommandAsync(Command command, CancellationToken cancellationToken);
+
+        Task<bool> InsertTableDataAsync(TableData table, CancellationToken cancellationToken);
     }
 }

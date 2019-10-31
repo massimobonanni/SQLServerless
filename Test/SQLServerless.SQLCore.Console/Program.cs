@@ -27,8 +27,9 @@ namespace SQLServerless.SQLCore.Console
 
             var connectionString = config.GetConnectionString("DefaultConnection");
 
-            TestGetInsertStatementTable();
+            //TestGetInsertStatementTable();
             //AddContact(connectionString);
+            AddContactWithInsertStatement(connectionString);
 
             var changeTracker = new SQLChangeTracker();
             changeTracker.SetConfiguration(new Core.Entities.ChangeTrackerConfiguration() { ConnectionString = connectionString });
@@ -66,6 +67,32 @@ namespace SQLServerless.SQLCore.Console
             command.Parameters.Add("email", "massimo.bonanni@microsoft.com");
 
             dbService.ExecuteCommandAsync(command, default(CancellationToken)).GetAwaiter().GetResult();
+        }
+
+        private static void AddContactWithInsertStatement(string connectionString)
+        {
+            IDBService dbService = new SQLService();
+            dbService.SetConfiguration(new Core.Entities.DBConfiguration() { ConnectionString = connectionString });
+
+            var table = new TableData() { TableName = "dbo.Contacts" };
+
+            var tablerow = new TableRowData();
+            tablerow.Add("FirstName", "Mario");
+            tablerow.Add("LastName", "Rossi");
+            tablerow.Add("Email", "marossi@microsoft.com");
+            tablerow.Add("Height", 200);
+            tablerow.Add("BirthDate", new DateTime(1980, 2, 26));
+            table.Rows.Add(tablerow);
+
+            tablerow = new TableRowData();
+            tablerow.Add("FirstName", "Luigi");
+            tablerow.Add("LastName", "Bianchi");
+            tablerow.Add("Email", "lubianchi@microsoft.com");
+            tablerow.Add("Height", 180);
+            tablerow.Add("BirthDate", new DateTime(1981, 2, 26));
+            table.Rows.Add(tablerow);
+
+            dbService.InsertTableDataAsync(table, default(CancellationToken)).GetAwaiter().GetResult();
         }
 
         private static void TestGetInsertStatement()
