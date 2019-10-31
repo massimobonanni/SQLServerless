@@ -21,7 +21,7 @@ namespace SQLServerless.SQLCore.Implementations
 
         #region [ Private Methods ]
 
-        private async Task<long> GetCurrentTrackingVersionAsync( CancellationToken cancellationToken)
+        private async Task<long> GetCurrentTrackingVersionAsync(CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(connectionString))
             using (var command = connection.CreateCommand())
@@ -50,13 +50,19 @@ namespace SQLServerless.SQLCore.Implementations
                 connection.Open();
                 using (var reader = await command.ExecuteReaderAsync(cancellationToken))
                 {
-                    var tableData = new TableData();
+                    var columnNames = reader.GetColumnNames();
+                    var tableData = new TableData() { TableName = tableName };
                     while (await reader.ReadAsync(cancellationToken))
                     {
                         var fieldCount = reader.FieldCount;
                         var row = new object[fieldCount];
                         reader.GetValues(row);
-                        tableData.Rows.Add(row.Take(row.Count() - 5).ToList());
+                        var dataRow = new TableRowData();
+                        for (var i = 0; i < row.Count() - 5; i++)
+                        {
+                            dataRow.Add(columnNames[i], row[i]);
+                        }
+                        tableData.Rows.Add(dataRow);
                     }
                     return tableData;
                 }

@@ -8,10 +8,14 @@ namespace SQLServerless.Core.Entities
     {
         public TableData()
         {
-            Rows = new List<List<object>>();
+            Rows = new List<TableRowData>();
         }
 
         public string TableName { get; set; }
-        public List<List<object>> Rows { get; set; }
+        public List<TableRowData> Rows { get; set; }
+    }
+
+    public class TableRowData : Dictionary<string, object>
+    {
     }
 }

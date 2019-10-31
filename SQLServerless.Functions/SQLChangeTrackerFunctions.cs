@@ -23,7 +23,7 @@ namespace SQLServerless.Functions
                 string message = string.Empty;
                 foreach (var item in row)
                 {
-                    message += $"{item}; ";
+                    message += $"{item.Key}={item.Value}; ";
                 }
                 log.LogWarning(message);
             }
