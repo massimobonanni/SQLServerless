@@ -71,10 +71,10 @@ namespace SQLServerless.SQLCore.Console
         private static void TestGetInsertStatement()
         {
             var tablerow = new TableRowData();
-            tablerow.Add("Id",1);
             tablerow.Add("FirstName", "Massimo");
             tablerow.Add("LastName", "Bonanni");
-            tablerow.Add("Age", 49);
+            tablerow.Add("Email", "mabonann@microsoft.com");
+            tablerow.Add("Height", 175);
             tablerow.Add("BirthDate", new DateTime(1970,2,26));
 
             var statement = QueryFactory.GetInsertStatement("dbo.Contacts", tablerow);
