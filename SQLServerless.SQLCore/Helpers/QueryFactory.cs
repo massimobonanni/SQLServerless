@@ -42,6 +42,41 @@ namespace SQLServerless.SQLCore.Helpers
             return strBuilder.ToString();
         }
 
+        public static string GetInsertStatement(TableData table)
+        {
+            if (!table.Rows.Any())
+                throw new ArgumentException(nameof(table.Rows));
+
+            // INSERT INTO Production.UnitMeasure (Name, UnitMeasureCode, ModifiedDate) VALUES (N'Square Yards', N'Y2', GETDATE()),(N'Square Yards', N'Y2', GETDATE());
+            var strBuilder = new StringBuilder();
+            strBuilder.Append($"INSERT INTO {table.TableName} (");
+            var firstRow = table.Rows[1];
+            for (var i = 0; i < firstRow.Count; i++)
+            {
+                strBuilder.Append($"{firstRow.Keys.ElementAt(i)}");
+                if (i < firstRow.Count - 1)
+                    strBuilder.Append(", ");
+            }
+            strBuilder.Append(") VALUES");
+
+            for (int rowIndex = 0; rowIndex < table.Rows.Count; rowIndex++)
+            {
+                strBuilder.Append(" (");
+                var row = table.Rows[rowIndex];
+                for (int i = 0; i < row.Count; i++)
+                {
+                    strBuilder.Append($"{GetSqlFormattedValue(row.Values.ElementAt(i))}");
+                    if (i < row.Count - 1)
+                        strBuilder.Append(", ");
+                }
+                strBuilder.Append(") ");
+                if (rowIndex<table.Rows.Count-1)
+                    strBuilder.Append(", ");
+            }
+
+            return strBuilder.ToString();
+        }
+
         private static string GetSqlFormattedValue(object value)
         {
             if (value == null)

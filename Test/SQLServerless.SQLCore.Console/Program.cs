@@ -27,7 +27,7 @@ namespace SQLServerless.SQLCore.Console
 
             var connectionString = config.GetConnectionString("DefaultConnection");
 
-            TestGetInsertStatement();
+            TestGetInsertStatementTable();
             //AddContact(connectionString);
 
             var changeTracker = new SQLChangeTracker();
@@ -78,6 +78,30 @@ namespace SQLServerless.SQLCore.Console
             tablerow.Add("BirthDate", new DateTime(1970,2,26));
 
             var statement = QueryFactory.GetInsertStatement("dbo.Contacts", tablerow);
+
+        }
+
+        private static void TestGetInsertStatementTable()
+        {
+            var table = new TableData() { TableName = "dbo.Contacts" };
+
+            var tablerow = new TableRowData();
+            tablerow.Add("FirstName", "Mario");
+            tablerow.Add("LastName", "Rossi");
+            tablerow.Add("Email", "marossi@microsoft.com");
+            tablerow.Add("Height", 200);
+            tablerow.Add("BirthDate", new DateTime(1980, 2, 26));
+            table.Rows.Add(tablerow);
+
+            tablerow = new TableRowData();
+            tablerow.Add("FirstName", "Luigi");
+            tablerow.Add("LastName", "Bianchi");
+            tablerow.Add("Email", "lubianchi@microsoft.com");
+            tablerow.Add("Height", 180);
+            tablerow.Add("BirthDate", new DateTime(1981, 2, 26));
+            table.Rows.Add(tablerow);
+
+            var statement = QueryFactory.GetInsertStatement(table);
 
         }
     }
