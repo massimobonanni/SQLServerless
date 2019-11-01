@@ -9,16 +9,19 @@ trigger:
     include:
     - master
   paths:
+    include:
+    - Demo/SQLServerless.Demo.DB/*
     exclude:
     - Demo/*
     - Test/*
+    - SQLServerless.*
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
-  projectToBuild: '**/SQLServerless.Functions/SQLServerless.Functions.csproj'
+  projectToBuild: '**/Demo/SQLServerless.Demo.DB/SQLServerless.Demo.DB.sqlproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -45,4 +48,4 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'AzureFunction'
+    ArtifactName: 'DataBase'
