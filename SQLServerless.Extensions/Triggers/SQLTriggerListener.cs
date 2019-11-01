@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SQLServerless.Extensions.Triggers
 {
 
-    public class SQLTriggerListener : IListener
+    public sealed class SQLTriggerListener : IListener
     {
 
         private readonly ITriggeredFunctionExecutor _executor;
@@ -38,7 +38,7 @@ namespace SQLServerless.Extensions.Triggers
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _listenerStoppingTokenSource.Dispose();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
