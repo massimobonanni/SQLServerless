@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Text;
 
 [assembly: WebJobsStartup(typeof(Startup))]
-
 public class Startup : IWebJobsStartup
 {
     public void Configure(IWebJobsBuilder builder)

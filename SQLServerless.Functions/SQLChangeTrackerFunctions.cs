@@ -8,11 +8,11 @@ using System.Text;
 
 namespace SQLServerless.Functions
 {
-    public static class SQLChangeTrackerFunctions
+    public class SQLChangeTrackerFunctions
     {
 
         [FunctionName(nameof(ContactsChangeTracker))]
-        public static void ContactsChangeTracker(
+        public void ContactsChangeTracker(
            [SQLTrigger("dbo.Contacts", "Id")] TableData req,
            ILogger log)
         {

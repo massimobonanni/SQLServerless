@@ -22,5 +22,22 @@ namespace SQLServerless.Functions.Extensions
 
             return row;
         }
+
+        public static TableData ToTableData(this ContactDTO contact, string tableName)
+        {
+            if (contact == null)
+                throw new NullReferenceException(nameof(contact));
+            if (string.IsNullOrWhiteSpace(tableName))
+                throw new ArgumentException(nameof(tableName));
+
+            var table = new TableData()
+            {
+                TableName = tableName
+            };
+
+            table.Rows.Add(contact.ToRowData());
+
+            return table;
+        }
     }
 }
