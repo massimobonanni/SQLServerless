@@ -50,7 +50,7 @@ namespace SQLServerless.SQLCore.Helpers
             // INSERT INTO Production.UnitMeasure (Name, UnitMeasureCode, ModifiedDate) VALUES (N'Square Yards', N'Y2', GETDATE()),(N'Square Yards', N'Y2', GETDATE());
             var strBuilder = new StringBuilder();
             strBuilder.Append($"INSERT INTO {table.TableName} (");
-            var firstRow = table.Rows[1];
+            var firstRow = table.Rows[0];
             for (var i = 0; i < firstRow.Count; i++)
             {
                 strBuilder.Append($"{firstRow.Keys.ElementAt(i)}");
@@ -81,7 +81,7 @@ namespace SQLServerless.SQLCore.Helpers
         {
             if (value == null)
             {
-                return null;
+                return "NULL";
             }
 
             Type valueType = value.GetType();

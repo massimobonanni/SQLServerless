@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
+using SQLServerless.Extensions.Bindings;
 using SQLServerless.Extensions.Triggers;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,16 @@ namespace Microsoft.Azure.WebJobs
                 throw new NullReferenceException(nameof(builder));
 
             builder.AddExtension<SQLTriggerConfigProvider>();
+
+            return builder;
+        }
+
+        public static IWebJobsBuilder UseSQLBinding(this IWebJobsBuilder builder)
+        {
+            if (builder == null)
+                throw new NullReferenceException(nameof(builder));
+
+            builder.AddExtension<SQLBindingConfigProvider>();
 
             return builder;
         }

@@ -15,8 +15,10 @@ public class Startup : IWebJobsStartup
     public void Configure(IWebJobsBuilder builder)
     {
         builder.UseSQLTrigger();
+        builder.UseSQLBinding();
 
         builder.Services.AddTransient<IChangeTracker, SQLChangeTracker>();
+        builder.Services.AddTransient<IDBService, SQLService>();
 
         ServiceLocator.DefaultProvider = builder.Services.BuildServiceProvider();
     }
