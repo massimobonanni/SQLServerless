@@ -58,10 +58,14 @@ namespace SQLServerless.SQLCore.Implementations
                         var row = new object[fieldCount];
                         reader.GetValues(row);
                         var dataRow = new TableRowData();
-                        for (var i = 0; i < row.Count() - 5; i++)
+                        for (var i = 0; i < row.Count() - 6; i++)
                         {
-                            dataRow.Add(columnNames[i], row[i]);
+                            if (columnNames[i] == keyName) // retrieve key field from data change table to support delete operation
+                                dataRow.Add(columnNames[i], row[row.Count() - 5]);
+                            else
+                                dataRow.Add(columnNames[i], row[i]);
                         }
+
                         tableData.Rows.Add(dataRow);
                     }
                     return tableData;

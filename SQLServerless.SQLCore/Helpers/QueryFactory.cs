@@ -15,7 +15,7 @@ namespace SQLServerless.SQLCore.Helpers
 
         public static string GetChangesQuery(string tableName, string keyName, long trackingVersion)
         {
-            return $"SELECT P.*, CT.SYS_CHANGE_VERSION, CT.SYS_CHANGE_CREATION_VERSION, CT.SYS_CHANGE_OPERATION, CT.SYS_CHANGE_COLUMNS, CT.SYS_CHANGE_CONTEXT FROM {tableName} AS P RIGHT OUTER JOIN CHANGETABLE(CHANGES {tableName}, {trackingVersion}) AS CT ON P.{keyName} = CT.{keyName}";
+            return $"SELECT P.*, CT.{keyName}, CT.SYS_CHANGE_VERSION, CT.SYS_CHANGE_CREATION_VERSION, CT.SYS_CHANGE_COLUMNS, CT.SYS_CHANGE_CONTEXT, CT.SYS_CHANGE_OPERATION FROM CHANGETABLE(CHANGES {tableName}, {trackingVersion}) AS CT left join {tableName} AS P ON CT.{keyName} = P.{keyName}";
         }
 
         public static string GetInsertStatement(string tableName, TableRowData row)
@@ -70,7 +70,7 @@ namespace SQLServerless.SQLCore.Helpers
                         strBuilder.Append(", ");
                 }
                 strBuilder.Append(") ");
-                if (rowIndex<table.Rows.Count-1)
+                if (rowIndex < table.Rows.Count - 1)
                     strBuilder.Append(", ");
             }
 
