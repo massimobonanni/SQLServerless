@@ -27,14 +27,17 @@ namespace SQLServerless.Functions
 
             this.dbService = dbService;
 
+            var connectionString=Environment.GetEnvironmentVariable("SQLBinding.Connectionstring", EnvironmentVariableTarget.Process);
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new InvalidOperationException($"Connectionstring  must be set either via the attribute property or via configuration.");
+            this.dbService.SetConfiguration(new DBConfiguration() { ConnectionString = connectionString });
 
         }
 
         [FunctionName(nameof(InsertWithCustomService))]
         public async Task<IActionResult> InsertWithCustomService(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log,
-            Microsoft.Azure.WebJobs.ExecutionContext context)
+            ILogger log)
         {
             log.LogInformation($"{nameof(InsertWithCustomService)} HTTP trigger function processed a request.");
 
@@ -42,7 +45,6 @@ namespace SQLServerless.Functions
             var contact = JsonConvert.DeserializeObject<ContactDTO>(requestBody);
             log.LogInformation($"Contact: [{contact}] received");
 
-            this.dbService.SetConfiguration(new DBConfiguration() { ConnectionString = context.GetConfig("SQLBinding.Connectionstring") });
             await this.dbService.InsertTableDataAsync(contact.ToTableData("dbo.Contacts"), default(CancellationToken));
 
             return (ActionResult)new OkObjectResult($"Contact: [{contact}] inserted");

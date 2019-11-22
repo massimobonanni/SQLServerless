@@ -30,6 +30,15 @@ namespace SQLServerless.Extensions.Triggers
         public SQLTriggerBinding(ParameterInfo parameter, INameResolver nameResolver,
             IChangeTracker changeTracker, SQLTriggerAttribute attribute)
         {
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+            if (nameResolver == null)
+                throw new ArgumentNullException(nameof(nameResolver));
+            if (attribute == null)
+                throw new ArgumentNullException(nameof(attribute));
+            if (changeTracker == null)
+                throw new ArgumentNullException(nameof(changeTracker));
+
             this._parameter = parameter;
             this._nameResolver = nameResolver;
             this._attribute = attribute;

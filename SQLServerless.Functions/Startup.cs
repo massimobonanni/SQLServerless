@@ -19,7 +19,7 @@ public class Startup : IWebJobsStartup
         builder.Services.AddTransient<IChangeTracker, SQLChangeTracker>();
         builder.Services.AddTransient<IDBService, SQLService>();
 
-        ServiceLocator.DefaultProvider = builder.Services.BuildServiceProvider();
+        builder.Services.BuildServiceProvider();
     }
 }
 

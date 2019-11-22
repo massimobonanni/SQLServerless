@@ -15,7 +15,7 @@ namespace SQLServerless.Extensions.Triggers
             this.KeyName = keyName;
         }
 
-        [AppSetting(Default = "ConnectionString")]
+        [AppSetting(Default = "SQLTrigger.ConnectionString")]
         [AutoResolve]
         public string ConnectionString { get; set; }
 
@@ -23,7 +23,7 @@ namespace SQLServerless.Extensions.Triggers
 
         public string KeyName { get; internal set; }
 
-        [AppSetting(Default = "PollingInSecs")]
+        [AppSetting(Default = "SQLTrigger.PollingInSecs")]
         [AutoResolve]
         public int PollingInSeconds { get; set; } = 10;
     }

@@ -10,7 +10,7 @@ using SQLServerless.Core.Interfaces;
 
 namespace SQLServerless.Extensions.Bindings
 {
-    [Extension("SQLExtension")]
+    [Extension("SQLBinding")]
     public class SQLBindingConfigProvider : IExtensionConfigProvider
     {
         private readonly INameResolver _nameResolver;
@@ -48,6 +48,8 @@ namespace SQLServerless.Extensions.Bindings
         {
             if (string.IsNullOrEmpty(attribute.ConnectionString))
                 throw new InvalidOperationException($"Connectionstring  must be set either via the attribute property or via configuration.");
+            if (string.IsNullOrWhiteSpace(attribute.TableName))
+                throw new InvalidOperationException($"TableName must be set either via the attribute property or via configuration.");
         }
     }
 }

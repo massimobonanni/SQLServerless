@@ -26,6 +26,13 @@ namespace SQLServerless.Extensions.Triggers
         public SQLTriggerListener(ITriggeredFunctionExecutor executor,
             IChangeTracker changeTracker, SQLTriggerAttribute attribute)
         {
+            if (executor == null)
+                throw new ArgumentNullException(nameof(executor));
+            if (attribute == null)
+                throw new ArgumentNullException(nameof(attribute));
+            if (changeTracker == null)
+                throw new ArgumentNullException(nameof(changeTracker));
+
             this._executor = executor;
             this._changeTracker = changeTracker;
             this._attribute = attribute;

@@ -20,6 +20,13 @@ namespace SQLServerless.Extensions.Triggers
         public SQLTriggerBindingProvider(INameResolver nameResolver,
             ILoggerFactory loggerFactory, IChangeTracker changeTracker)
         {
+            if (nameResolver == null)
+                throw new ArgumentNullException(nameof(nameResolver));
+            if (loggerFactory == null)
+                throw new ArgumentNullException(nameof(loggerFactory));
+            if (changeTracker == null)
+                throw new ArgumentNullException(nameof(changeTracker));
+
             this._nameResolver = nameResolver;
             this._loggerFactory = loggerFactory;
             this._changeTracker = changeTracker;
