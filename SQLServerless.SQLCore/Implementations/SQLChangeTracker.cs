@@ -61,11 +61,11 @@ namespace SQLServerless.SQLCore.Implementations
                         for (var i = 0; i < row.Count() - 6; i++)
                         {
                             if (columnNames[i] == keyName) // retrieve key field from data change table to support delete operation
-                                dataRow.Add(columnNames[i], row[row.Count() - 5]);
+                                dataRow.Add(columnNames[i], row[row.Count() - 6]);
                             else
                                 dataRow.Add(columnNames[i], row[i]);
                         }
-
+                        dataRow.Operation = row[row.Count() - 1].ToRowOperation();
                         tableData.Rows.Add(dataRow);
                     }
                     return tableData;

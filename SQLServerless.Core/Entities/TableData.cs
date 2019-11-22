@@ -12,10 +12,20 @@ namespace SQLServerless.Core.Entities
         }
 
         public string TableName { get; set; }
+
         public List<TableRowData> Rows { get; set; }
     }
 
     public class TableRowData : Dictionary<string, object>
     {
+        public RowOperation Operation { get; set; }
+    }
+
+    public enum RowOperation
+    {
+        Unknown,
+        Insert,
+        Update,
+        Delete
     }
 }

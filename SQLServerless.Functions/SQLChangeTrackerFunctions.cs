@@ -20,7 +20,7 @@ namespace SQLServerless.Functions
 
             foreach (var row in req.Rows)
             {
-                string message = string.Empty;
+                string message = $"Operation={row.Operation} --> ";
                 foreach (var item in row)
                 {
                     message += $"{item.Key}={item.Value}; ";
