@@ -14,10 +14,10 @@ using SQLServerless.Functions.Extensions;
 
 namespace SQLServerless.Functions
 {
-    public class SQLBindingFunctions
+    public static class SQLBindingFunctions
     {
         [FunctionName(nameof(InsertWithBinding))]
-        public async Task<IActionResult> InsertWithBinding(
+        public static async Task<IActionResult> InsertWithBinding(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [SQLBinding(TableName = "dbo.Contacts")] IAsyncCollector<TableRowData> sqlRows,
             ILogger log)
