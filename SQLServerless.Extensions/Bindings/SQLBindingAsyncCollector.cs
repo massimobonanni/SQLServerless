@@ -40,6 +40,7 @@ namespace SQLServerless.Extensions.Bindings
 
         public Task AddAsync(TableRowData row, CancellationToken cancellationToken = default)
         {
+            row.Operation = RowOperation.Insert;
             _rowsToInsert.Add(row);
             return Task.CompletedTask;
         }
@@ -49,7 +50,7 @@ namespace SQLServerless.Extensions.Bindings
             var table = new TableData()
             {
                 TableName = this._attribute.TableName,
-                Rows = _rowsToInsert
+                Rows = _rowsToInsert,
             };
 
             await this._dbService.InsertTableDataAsync(table, cancellationToken);
