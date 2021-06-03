@@ -35,12 +35,12 @@ namespace SQLServerless.Extensions.Bindings
             });
         }
 
-        public Task InsertAsync(TableData table,CancellationToken cancellationToken)
+        public Task InsertAsync(TableData table, CancellationToken cancellationToken)
         {
             if (table == null)
                 throw new ArgumentNullException(nameof(table));
 
-            return _dbService.InsertTableDataAsync(table,cancellationToken);
+            return _dbService.InsertTableDataAsync(table, cancellationToken);
         }
     }
 }

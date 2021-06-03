@@ -1,11 +1,13 @@
-﻿using SQLServerless.Core.Entities;
+﻿//#define SERVERLESS_SUPPORT
+
+using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Retry;
+using SQLServerless.Core.Entities;
 using SQLServerless.Core.Interfaces;
 using SQLServerless.SQLCore.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +16,12 @@ namespace SQLServerless.SQLCore.Implementations
     public class SQLService : IDBService
     {
         private string connectionString;
+        private readonly ILogger logger;
+
+        public SQLService(ILoggerFactory loggerFactory)
+        {
+            this.logger = loggerFactory.CreateLogger(nameof(SQLService));
+        }
 
         #region [ Private Methods ]
         private async Task<SqlConnection> OpenSqlConnectionAsync(CancellationToken cancellationToken)
@@ -57,6 +65,19 @@ namespace SQLServerless.SQLCore.Implementations
         #endregion [ Private Methods ]
 
         #region [ Interface IDBService ]
+
+        public void SetConfiguration(DBConfiguration config)
+        {
+            if (config == null)
+                throw new ArgumentNullException(nameof(config));
+
+            if (string.IsNullOrWhiteSpace(config.ConnectionString))
+                throw new ArgumentException(nameof(config.ConnectionString));
+
+            this.connectionString = config.ConnectionString;
+        }
+
+#if !SERVERLESS_SUPPORT
         public async Task<bool> ExecuteCommandAsync(Command command, CancellationToken cancellationToken)
         {
             if (command == null)
@@ -72,18 +93,7 @@ namespace SQLServerless.SQLCore.Implementations
 
             return result;
         }
-
-        public void SetConfiguration(DBConfiguration config)
-        {
-            if (config == null)
-                throw new ArgumentNullException(nameof(config));
-
-            if (string.IsNullOrWhiteSpace(config.ConnectionString))
-                throw new ArgumentException(nameof(config.ConnectionString));
-
-            this.connectionString = config.ConnectionString;
-        }
-
+        
         public async Task<bool> InsertTableDataAsync(TableData table, CancellationToken cancellationToken)
         {
             if (table == null)
@@ -99,6 +109,75 @@ namespace SQLServerless.SQLCore.Implementations
 
             return result;
         }
+#endif
+
+#if SERVERLESS_SUPPORT
+
+        private AsyncRetryPolicy retryPolicy = Policy
+                .Handle<SqlException>()
+                .WaitAndRetryAsync(5,
+                count => TimeSpan.FromMilliseconds(500 * count),
+                (e, t) =>
+                {
+                    // Here you can add behavior when an exception occurs
+                });
+
+
+        public async Task<bool> ExecuteCommandAsync(Command command, CancellationToken cancellationToken)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+
+            var result = false;
+            try
+            {
+                var policyresult = await retryPolicy.ExecuteAndCaptureAsync<bool>(async () =>
+                {
+                    using (var sqlConnection = await OpenSqlConnectionAsync(cancellationToken))
+                    using (var sqlCommand = CreateSqlCommand(sqlConnection, command))
+                    {
+                        await sqlCommand.ExecuteNonQueryAsync(cancellationToken);
+                        return true;
+                    }
+                });
+
+                result = policyresult.Result;
+            }
+            catch (Exception)
+            {
+            }
+
+            return result;
+        }
+
+        public async Task<bool> InsertTableDataAsync(TableData table, CancellationToken cancellationToken)
+        {
+            if (table == null)
+                throw new ArgumentNullException(nameof(table));
+
+            var result = false;
+            try
+            {
+                var policyresult = await retryPolicy.ExecuteAndCaptureAsync<bool>(async () =>
+                {
+                    using (var sqlConnection = await OpenSqlConnectionAsync(cancellationToken))
+                    using (var sqlCommand = CreateSqlCommand(sqlConnection, table))
+                    {
+                        await sqlCommand.ExecuteNonQueryAsync(cancellationToken);
+                        return true;
+                    }
+                });
+
+                result = policyresult.Result;
+            }
+            catch (Exception)
+            {
+                // Here when the connection to SQL Database throws error more than 5 times
+            }
+            return result;
+        }
+#endif
+
         #endregion [ Interface IDBService ]
     }
 }

@@ -7,5 +7,6 @@ namespace SQLServerless.Core.Entities
     public class DBConfiguration
     {
         public string ConnectionString { get; set; }
+        public bool IsServerless { get; set; }
     }
 }

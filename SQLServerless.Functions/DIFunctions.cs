@@ -1,18 +1,17 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SQLServerless.Extensions.Bindings;
 using SQLServerless.Core.Entities;
 using SQLServerless.Functions.DTO;
 using SQLServerless.Functions.Extensions;
 using SQLServerless.Core.Interfaces;
 using System.Threading;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace SQLServerless.Functions
 {
