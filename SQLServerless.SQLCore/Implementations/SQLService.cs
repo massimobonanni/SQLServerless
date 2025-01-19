@@ -1,4 +1,4 @@
-﻿//#define SERVERLESS_SUPPORT
+﻿#define SERVERLESS_SUPPORT
 
 using Microsoft.Extensions.Logging;
 using Polly;
@@ -116,11 +116,11 @@ namespace SQLServerless.SQLCore.Implementations
         private AsyncRetryPolicy retryPolicy = Policy
                 .Handle<SqlException>()
                 .WaitAndRetryAsync(5,
-                count => TimeSpan.FromMilliseconds(500 * count),
-                (e, t) =>
-                {
-                    // Here you can add behavior when an exception occurs
-                });
+                    count => TimeSpan.FromMilliseconds(500 * count),
+                    (e, t) =>
+                    {
+                       // Here you can add behavior when an exception occurs
+                    });
 
 
         public async Task<bool> ExecuteCommandAsync(Command command, CancellationToken cancellationToken)
